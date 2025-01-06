@@ -13,9 +13,7 @@ This repository contains an RPA project designed to automate the processing and 
 ## Process Overview
 1. **Launch ACME System1**
    - Navigate to [ACME System1](https://acme-test.uipath.com).
-   - Log in with the following credentials:
-     - Username: `robotics@vois.com`
-     - Password: `12345678`.
+   - Log in 
 
 2. **Input File Preparation**
    - Use the file `VendorInvoicesData.xlsx`.
