@@ -1,39 +1,67 @@
-### Documentation is included in the Documentation folder ###
+# ACME Vendor Invoice Automation
 
+This repository contains an RPA project designed to automate the processing and calculation of vendor invoices using UiPath. The project interacts with the ACME System1 web application, processes data from an Excel file, and sends the output via email.
 
-### REFrameWork Template ###
-**Robotic Enterprise Framework**
+## Features
+- Logs into the ACME System1 platform.
+- Extracts vendor data from the `VendorInvoicesData.xlsx` file.
+- Downloads monthly invoices for each vendor from the ACME platform.
+- Calculates total invoices for each vendor and updates the Excel file.
+- Saves the updated file and uploads it to OneDrive using a custom API integration.
+- Sends the output file via email.
 
-* Built on top of *Transactional Business Process* template
-* Uses *State Machine* layout for the phases of automation project
-* Offers high level logging, exception handling and recovery
-* Keeps external settings in *Config.xlsx* file and Orchestrator assets
-* Pulls credentials from Orchestrator assets and *Windows Credential Manager*
-* Gets transaction data from Orchestrator queue and updates back status
-* Takes screenshots in case of system exceptions
+## Process Overview
+1. **Launch ACME System1**
+   - Navigate to [ACME System1](https://acme-test.uipath.com).
+   - Log in with the following credentials:
+     - Username: `robotics@vois.com`
+     - Password: `12345678`.
 
+2. **Input File Preparation**
+   - Use the file `VendorInvoicesData.xlsx`.
+   - Add a new column named `Total Invoices` to the `Vendors` sheet.
 
-### How It Works ###
+3. **Extract Vendor Data**
+   - Extract vendor information from the `Vendors` sheet and upload the data to the robot queue.
 
-1. **INITIALIZE PROCESS**
- + ./Framework/*InitiAllSettings* - Load configuration data from Config.xlsx file and from assets
- + ./Framework/*GetAppCredential* - Retrieve credentials from Orchestrator assets or local Windows Credential Manager
- + ./Framework/*InitiAllApplications* - Open and login to applications used throughout the process
+4. **Process Each Vendor**
+   - Navigate to the "Internal Invoices" tab for each vendor.
+   - Download monthly invoices from January to December using the Vendor Value.
+   - Populate the downloaded data into the `Vendor Invoices` sheet.
 
-2. **GET TRANSACTION DATA**
- + ./Framework/*GetTransactionData* - Fetches transactions from an Orchestrator queue defined by Config("OrchestratorQueueName") or any other configured data source
+5. **Calculate Total Invoices**
+   - Use the populated `Vendor Invoices` sheet to calculate the total invoices for each vendor.
+   - Update the `Total Invoices` column in the `Vendors` sheet.
 
-3. **PROCESS TRANSACTION**
- + *Process* - Process trasaction and invoke other workflows related to the process being automated 
- + ./Framework/*SetTransactionStatus* - Updates the status of the processed transaction (Orchestrator transactions by default): Success, Business Rule Exception or System Exception
+6. **Save and Upload the Output File**
+   - Save the updated Excel file locally.
+   - Upload the file to OneDrive using a custom API integration (without UiPath's OneDrive library).
 
-4. **END PROCESS**
- + ./Framework/*CloseAllApplications* - Logs out and closes applications used throughout the process
+7. **Send Output File via Email**
+   - Email the updated file to the intended recipient(s).
 
+## Requirements
+- UiPath Studio (Classic Activities enabled).
+- Input File: `VendorInvoicesData.xlsx`.
+- Access to the ACME System1 platform.
+- OneDrive API credentials for custom integration.
 
-### For New Project ###
+## Setup and Execution
+1. Clone the repository.
+2. Open the UiPath project in UiPath Studio.
+3. Place the `VendorInvoicesData.xlsx` file in the designated input folder.
+4. Configure OneDrive API credentials in the project settings.
+5. Run the automation.
+6. Verify the output file in OneDrive and email inbox.
 
-1. Check the Config.xlsx file and add/customize any required fields and values
-2. Implement InitiAllApplications.xaml and CloseAllApplicatoins.xaml workflows, linking them in the Config.xlsx fields
-3. Implement GetTransactionData.xaml and SetTransactionStatus.xaml according to the transaction type being used (Orchestrator queues by default)
-4. Implement Process.xaml workflow and invoke other workflows related to the process being automated
+## Output
+- An updated `VendorInvoicesData.xlsx` file with:
+  - Total monthly invoices downloaded for each vendor.
+  - Calculated `Total Invoices` values added to the `Vendors` sheet.
+
+## Contact
+For any issues or queries, feel free to raise an issue in the repository.
+
+---
+
+This project demonstrates efficient automation of repetitive tasks using UiPath, custom API integrations, and data processing techniques.
